@@ -2,8 +2,8 @@
 Dockerfiles for CMSSW
 
 There are two different sets of Dockerfiles in this repository:
-- (CVMFS)[cvmfs]-based images
-- (standalone)[standalone] images
+- [CVMFS](cvmfs)-based images
+- [standalone](standalone) images
 The former will need the CMS instance of CVMFS mounted. The advantage is that they are much smaller while the standalone images contain the full CMSSW release (around 15 GB).
 
 # Building images
