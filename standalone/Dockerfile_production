@@ -4,19 +4,49 @@ MAINTAINER Clemens Lange "clemens.lange@cern.ch"
 ARG SCRAM_ARCH=slc6_amd64_gcc530
 ARG CMSSW_VERSION=CMSSW_9_2_1
 
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VCS_URL
+LABEL   org.label-schema.build-date=$BUILD_DATE \
+        org.label-schema.name="CMSSW Docker standalone images" \
+        org.label-schema.description="Provide completely offline-runnable CMSSW images." \
+        org.label-schema.url="http://cms-sw.github.io/" \
+        org.label-schema.vcs-ref=$VCS_REF \
+        org.label-schema.vcs-url=$VCS_URL \
+        org.label-schema.vendor="CERN" \
+        org.label-schema.version=$VERSION \
+        org.label-schema.schema-version="1.0"
+
+CMD     /bin/bash
+RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa-libGLU-devel
+
 USER    cmsinst
 WORKDIR /opt/cms
-RUN     wget -O /opt/cms/bootstrap.sh http://cmsrep.cern.ch/cmssw/repos/bootstrap.sh
-RUN     sh /opt/cms/bootstrap.sh setup -r cms -architecture ${SCRAM_ARCH} -server cmsrep.cern.ch
-RUN     /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+local-cern-siteconf+sm111124
-RUN     /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+cmssw+${CMSSW_VERSION}
-RUN     /opt/cms/common/cmspkg -a ${SCRAM_ARCH} clean
+RUN     wget -O /opt/cms/bootstrap.sh http://cmsrep.cern.ch/cmssw/repos/bootstrap.sh \
+        && sh /opt/cms/bootstrap.sh setup -r cms -architecture ${SCRAM_ARCH} -server cmsrep.cern.ch \
+        && /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+local-cern-siteconf+sm111124 \
+        && /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+cmssw+${CMSSW_VERSION} \
+        && /opt/cms/common/cmspkg -a ${SCRAM_ARCH} clean
 
 USER    root
 RUN     /bin/cp -f /opt/cms/cmsset_default.sh  /etc/profile.d/
-RUN     /bin/cp -f /opt/cms/cmsset_default.csh /etc/profile.d/
+
 USER    cmsbld
-
 WORKDIR /home/cmsbld
+RUN     source /opt/cms/cmsset_default.sh
 
-# need to cmsrel ${CMSSW_VERSION} && cd ${CMSSW_VERSION}/src && cmsenv
+# scramv1 project CMSSW ${CMSSW_VERSION} \
+# cd ${CMSSW_VERSION}/src \
+# eval `scramv1 runtime -sh`
+# git config --global user.name Clemens Lange
+# git config --global user.email clemens.lange@cern.ch
+# git config --global user.github clelange
+# git cms-init -y
+# git checkout official-cmssw/master -- .clang-tidy
+# git clone https://github.com/CMS-HGCAL/reco-ntuples.git RecoNtuples
+# scram b code-checks-all
+# scram b distclean
+# git cms-checkdeps -a
+# scram b -j 8
+## scram b runtests
