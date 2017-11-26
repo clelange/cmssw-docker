@@ -1,0 +1,23 @@
+## .bashrc
+
+if [ -f "/etc/bashrc" ] ; then
+  source /etc/bashrc
+fi
+
+export PYTHONSTARTUP=$HOME/.pythonrc.py
+
+## try to mount CVMFS
+echo "::: Trying to mount CVMFS..."
+/etc/cvmfs/run-cvmfs.sh
+if [ -f /cvmfs/cms.cern.ch/cmsset_default.sh ]
+then
+    echo "::: Mounting CVMFS... [done]"
+else
+    echo "::: Mounting CVMFS... [FAILED]"
+    echo "::: Did you run the docker container in privileged mode?"
+fi
+
+# set up CMS environment
+echo "::: Setting up CMS environment..."
+source /cvmfs/cms.cern.ch/cmsset_default.sh
+echo "::: Setting up CMS environment... [done]"
