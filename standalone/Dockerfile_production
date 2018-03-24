@@ -34,11 +34,20 @@ RUN     /bin/cp -f /opt/cms/cmsset_default.sh  /etc/profile.d/
 
 USER    cmsbld
 WORKDIR /home/cmsbld
-RUN     source /opt/cms/cmsset_default.sh
+ENV     CMSSW_VERSION=${CMSSW_VERSION}
+ENV     SCRAM_ARCH=${SCRAM_ARCH}
+RUN     echo $'source /opt/cms/cmsset_default.sh; \n\
+        scramv1 project CMSSW ${CMSSW_VERSION}; \n\
+        cd ${CMSSW_VERSION}/src; \n\
+        eval `scramv1 runtime -sh`; \n\
+        export PS1=\'[\\t] \\e[91m\\u\\e[0m@\\e[34m\\h \\e[36m\\w \\e[0m$ \'; \n\
+        export PROMPT=\'[%*] %F{red}%n%f@%F{blue}%m%f %F{yellow}%3~%f $ \'' \
+        > .bashrc; \
+        cp .bashrc .zshrc;
+ENTRYPOINT /bin/zsh
 
-# scramv1 project CMSSW ${CMSSW_VERSION} \
-# cd ${CMSSW_VERSION}/src \
-# eval `scramv1 runtime -sh`
+
+
 # git config --global user.name Clemens Lange
 # git config --global user.email clemens.lange@cern.ch
 # git config --global user.github clelange

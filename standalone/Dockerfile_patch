@@ -36,8 +36,13 @@ RUN     /bin/cp -f /opt/cms/cmsset_default.sh  /etc/profile.d/
 
 USER    cmsbld
 WORKDIR /home/cmsbld
-RUN     source /opt/cms/cmsset_default.sh
-
-# need to cmsrel ${CMSSW_VERSION} && cd ${CMSSW_VERSION}/src && cmsenv
-# also, need to have frontier database access - can we copy that or have tag locally?
-# What is checked when typing cmsenv?
+ENV     CMSSW_VERSION=${CMSSW_VERSION}_${PATCH}
+ENV     SCRAM_ARCH=${SCRAM_ARCH}
+RUN     echo $'source /opt/cms/cmsset_default.sh; \n\
+        scramv1 project CMSSW ${CMSSW_VERSION}; \n\
+        cd ${CMSSW_VERSION}/src; \n\
+        eval `scramv1 runtime -sh`; \n\
+        export PS1=\'[\\t] \\e[91m\\u\\e[0m@\\e[34m\\h \\e[36m\\w \\e[0m$ \'; \n\
+        export PROMPT=\'[%*] %F{red}%n%f@%F{blue}%m%f %F{yellow}%3~%f $ \'' \
+        > .bashrc; \
+        cp .bashrc .zshrc;
