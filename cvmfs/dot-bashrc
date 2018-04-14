@@ -1,23 +1,10 @@
-## .bashrc
-
-if [ -f "/etc/bashrc" ] ; then
-  source /etc/bashrc
-fi
-
+## .bashrc/.zshrc
 export PYTHONSTARTUP=$HOME/.pythonrc.py
+export PS1='[\t] \e[91m\u\e[0m@\e[34m\h \e[36m\w \e[0m$ \'
+export PROMPT='[%*] %F{red}%n%f@%F{blue}%m%f %F{yellow}%3~%f $ '
 
-## try to mount CVMFS
-echo "::: Trying to mount CVMFS..."
 /etc/cvmfs/run-cvmfs.sh
-if [ -f /cvmfs/cms.cern.ch/cmsset_default.sh ]
-then
-    echo "::: Mounting CVMFS... [done]"
-else
-    echo "::: Mounting CVMFS... [FAILED]"
-    echo "::: Did you run the docker container in privileged mode?"
-fi
 
-# set up CMS environment
 echo "::: Setting up CMS environment..."
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 echo "::: Setting up CMS environment... [done]"
