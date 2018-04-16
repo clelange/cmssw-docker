@@ -66,6 +66,16 @@ docker run --rm --cap-add SYS_ADMIN --device /dev/fuse -it cmssw-cvmfs /bin/bash
 ```
 Alternatively, one can also just use `--privileged` instead of `--cap-add SYS_ADMIN --device /dev/fuse`, see the [Docker run reference](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities).
 
+If you get an error similar to:
+```
+/bin/sh: error while loading shared libraries: libtinfo.so.5: failed to map segment from shared object: Permission denied
+```
+you need to turn off SElinux security policy enforcing:
+```
+sudo setenforce 0
+```
+This can be changed permanently by editing `/etc/selinux/config`, setting `SELINUX` to `permissive` or `disabled`.
+
 ## Grid proxy
 
 If you would like to be able to get a voms/grid proxy, mount your `.globus` directory by adding `-v ~/.globus:/home/cmsbld/.globus` to your `docker run` command.
