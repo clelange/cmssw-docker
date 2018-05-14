@@ -1,4 +1,4 @@
-FROM cmssw/slc6-base
+FROM cern/slc6-base
 MAINTAINER Clemens Lange "clemens.lange@cern.ch"
 
 ARG SCRAM_ARCH=slc6_amd64_gcc530
@@ -19,10 +19,24 @@ LABEL   org.label-schema.build-date=$BUILD_DATE \
         org.label-schema.schema-version="1.0"
 
 CMD     /bin/bash
-RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa-libGLU-devel
+RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa-libGLU-devel \
+        libXmu libXpm \
+        HEP_OSlibs_SL6 wget git \
+        tcsh zsh tcl \
+        perl-ExtUtils-Embed perl-libwww-perl \
+        compat-libstdc++-33 \
+        zip e2fsprogs \
+        CERN-CA-certs voms-clients-cpp ca-policy-lcg \
+        krb5-devel cern-wrappers krb5-workstation \
+        strace && \
+        yum clean -y all
+
+RUN     groupadd -g 500 cmsinst && adduser -u 500 -g 500 cmsinst && install -d /opt && install -d -o cmsinst /opt/cms && \
+        groupadd -g 501 cmsusr && adduser -u 501 -g 501 cmsusr
 
 USER    cmsinst
 WORKDIR /opt/cms
+
 RUN     wget -O /opt/cms/bootstrap.sh http://cmsrep.cern.ch/cmssw/repos/bootstrap.sh \
         && sh /opt/cms/bootstrap.sh setup -r cms -architecture ${SCRAM_ARCH} -server cmsrep.cern.ch \
         && /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+local-cern-siteconf+sm111124 \
@@ -32,8 +46,8 @@ RUN     wget -O /opt/cms/bootstrap.sh http://cmsrep.cern.ch/cmssw/repos/bootstra
 USER    root
 RUN     /bin/cp -f /opt/cms/cmsset_default.sh  /etc/profile.d/
 
-USER    cmsbld
-WORKDIR /home/cmsbld
+USER    cmsusr
+WORKDIR /home/cmsusr
 ENV     CMSSW_VERSION=${CMSSW_VERSION}
 ENV     SCRAM_ARCH=${SCRAM_ARCH}
 RUN     echo $'source /opt/cms/cmsset_default.sh; \n\
@@ -44,18 +58,5 @@ RUN     echo $'source /opt/cms/cmsset_default.sh; \n\
         export PROMPT=\'[%*] %F{red}%n%f@%F{blue}%m%f %F{yellow}%3~%f $ \'' \
         > .bashrc; \
         cp .bashrc .zshrc;
+
 ENTRYPOINT /bin/zsh
-
-
-
-# git config --global user.name Clemens Lange
-# git config --global user.email clemens.lange@cern.ch
-# git config --global user.github clelange
-# git cms-init -y
-# git checkout official-cmssw/master -- .clang-tidy
-# git clone https://github.com/CMS-HGCAL/reco-ntuples.git RecoNtuples
-# scram b code-checks-all
-# scram b distclean
-# git cms-checkdeps -a
-# scram b -j 8
-## scram b runtests
