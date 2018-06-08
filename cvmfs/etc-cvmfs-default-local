@@ -1,4 +1,4 @@
-CVMFS_REPOSITORIES=cms.cern.ch
+CVMFS_REPOSITORIES=cms.cern.ch,cms-opendata-conddb.cern.ch
 #CVMFS_CACHE_BASE=/scratch/var/cache/cvmfs2
 CVMFS_QUOTA_LIMIT=2000
 
