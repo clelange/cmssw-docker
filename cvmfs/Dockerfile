@@ -27,7 +27,7 @@ RUN yum update -y && yum install -y \
     cvmfs cvmfs-config-default \
     fuse sudo \
     glibc-headers time \
-    man nano openssh-server openssl098e libXext libXpm \
+    man nano openssh-server openssl098e libXext libXpm libXft libSM \
 	zsh \
     glibc-devel.i686 glibc-devel && \
     yum install -y -q wget git && \
