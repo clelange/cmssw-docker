@@ -31,9 +31,9 @@ RUN yum update -y && yum install -y \
     yum clean -y all
 
 # add kerberos and afs configs
-ADD ../cvmfs/krb5.conf /etc/krb5.conf
-ADD ../cvmfs/afs/etc /usr/vice/etc
-ADD ../cvmfs/openafs.ko /lib/modules/2.6.32-696.30.1.el6.x86_64/fs/openafs/openafs.ko
+ADD krb5.conf /etc/krb5.conf
+ADD afs/etc /usr/vice/etc
+ADD openafs.ko /lib/modules/2.6.32-696.30.1.el6.x86_64/fs/openafs/openafs.ko
 # RUN echo /lib/modules/2.6.32-696.30.1.el6.x86_64/fs/openafs/openafs.ko | openafs-modules --add-modules && \
     # /sbin/chkconfig --add afs && \
     # /sbin/service afs start
@@ -48,8 +48,8 @@ ENV HOME /home/cmsusr
 ENV VO_CMS_SW_DIR       /cvmfs/cms.cern.ch
 ENV CMS_LOCAL_ROOT_BASE /cvmfs/cms.cern.ch
 
-ADD ../cvmfs/dot-pythonrc.py $HOME/.pythonrc.py
-ADD ../cvmfs/dot-bashrc      $HOME/.bashrc
-ADD ../cvmfs/dot-bashrc      $HOME/.zshrc
+ADD dot-pythonrc.py $HOME/.pythonrc.py
+ADD dot-bashrc      $HOME/.bashrc
+ADD dot-bashrc      $HOME/.zshrc
 
 ENTRYPOINT /bin/zsh
