@@ -52,5 +52,6 @@ ENV CMS_LOCAL_ROOT_BASE /cvmfs/cms.cern.ch
 ADD dot-pythonrc.py $HOME/.pythonrc.py
 ADD dot-bashrc      $HOME/.bashrc
 ADD dot-bashrc      $HOME/.zshrc
+ADD start_afs.sh $HOME/start_afs.sh
 
 ENTRYPOINT /bin/zsh
