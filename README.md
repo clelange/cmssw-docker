@@ -2,11 +2,13 @@
 Dockerfiles for CMSSW
 
 There are two different sets of Dockerfiles in this repository:
+- [standalone](standalone) images [![](https://images.microbadger.com/badges/image/clelange/cmssw.svg)](https://microbadger.com/images/clelange/cmssw "Get your own image badge on microbadger.com")
 - [CVMFS](cvmfs)-based images
-- [standalone](standalone) images
-The former needs a network connection, and can be slow, since CMSSW is loaded via the network. The advantage is that they are much smaller (660 MB) while the standalone images contain the full CMSSW release (>= 15 GB).
+- [SLC6-only](slc6-only) images [![](https://images.microbadger.com/badges/image/clelange/cmssw-slc6-only.svg)](https://microbadger.com/images/clelange/cmssw-slc6-only "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/clelange/cmssw-slc6-only.svg)](https://microbadger.com/images/clelange/cmssw-slc6-only "Get your own version badge on microbadger.com")
 
-Both sets of images are currently based on SLC6.
+The non-standalone images need a network connection, and can be slow, since CMSSW is loaded via the network. The advantage is that they are much smaller (few hundreds of MB) while the standalone images contain the full CMSSW release (>= 15 GB).
+
+All sets of images are currently based on SLC6.
 
 # Building containers
 
