@@ -45,6 +45,15 @@ Since these containers load CMSSW via the network, any CMSSW version can be set 
 docker build -t cmssw-cvmfs .
 ```
 
+## SLC6-only version
+
+This image does not know about CMSSW, it is only an SLC6 image with some additional packages installed. CVMFS needs to be mounted as volume (see below). A `Makefile` is available to build the image:
+
+```
+make
+make docker_push
+```
+
 # Running containers
 
 Currently supported for automatic CMSSW setup are `bash` and `zshrc`.
@@ -75,6 +84,22 @@ you need to turn off SElinux security policy enforcing:
 sudo setenforce 0
 ```
 This can be changed permanently by editing `/etc/selinux/config`, setting `SELINUX` to `permissive` or `disabled`.
+
+## SLC6-only version
+
+On a machine that has `/cvmfs` mounted (and available to the docker process):
+```
+docker run --rm -it -v /cvmfs:/cvmfs clelange/cmssw-slc6-only /bin/zsh
+```
+
+On CERN OpenStack (see [OpenStack CVMFS documentation](http://clouddocs.web.cern.ch/clouddocs/containers/tutorials/cvmfs.html)):
+```
+docker run --rm -it --volume-driver cvmfs -v cms.cern.ch:/cvmfs/cms.cern.ch clelange/cmssw-slc6-only /bin/zsh
+```
+and for the CMS OpenData extend this to:
+```
+docker run --rm -it --volume-driver cvmfs -v cms.cern.ch:/cvmfs/cms.cern.ch -v cms-opendata-conddb.cern.ch:/cvmfs/cms-opendata-conddb.cern.ch clelange/cmssw-slc6-only /bin/zsh
+```
 
 ## Grid proxy
 
