@@ -1,9 +1,0 @@
->hepix.org   # HEPiX intersite cell
-193.205.219.8		# afs01.hepix.org
->itep.ru                # Institute for Theoretical and Experimental Physics, Moscow
-193.124.227.48          #vxitep.itep.ru
->atlas.udo.edu          #atlas physik.uni-dortmund.de
-129.217.163.110                 #top10.physik.uni-dortmund.de
->e4.physik.uni-dortmund.de #TU Dortmund, Physics E4
-129.217.167.20                  #afs.e4.physik.uni-dortmund.de
-129.217.167.24                  #afs2.e4.physik.uni-dortmund.de
