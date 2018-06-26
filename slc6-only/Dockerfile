@@ -7,6 +7,7 @@ LABEL maintainer="Clemens Lange clemens.lange@cern.ch"
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VCS_URL
+ARG VERSION
 LABEL   org.label-schema.build-date=$BUILD_DATE \
         org.label-schema.name="CMSSW Docker images for mounting /cvmfs separately" \
         org.label-schema.description="Provide lightweight images for running CMSSW." \
