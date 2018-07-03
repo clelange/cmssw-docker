@@ -61,4 +61,4 @@ RUN     echo $'source /opt/cms/cmsset_default.sh; \n\
         > .bashrc; \
         cp .bashrc .zshrc;
 
-ENTRYPOINT /bin/zsh
+# ENTRYPOINT /bin/zsh
