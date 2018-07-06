@@ -28,10 +28,11 @@ RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa
         zip e2fsprogs \
         CERN-CA-certs voms-clients-cpp ca-policy-lcg \
         krb5-devel cern-wrappers krb5-workstation \
-        strace && \
+        strace sudo && \
         yum clean -y all
 
 RUN     groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 cmsusr && \
+        echo "cmsusr ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers && \
         groupadd -g 1001 cmsinst && adduser -u 1001 -g 1001 cmsinst && \
         install -d /opt && install -d -o cmsinst /opt/cms
 
