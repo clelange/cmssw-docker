@@ -57,7 +57,7 @@ RUN     echo $'export PS1=\'[\\t] \\e[91m\\u\\e[0m@\\e[34m\\h \\e[36m\\w \\e[0m$
         export PROMPT=\'[%*] %F{red}%n%f@%F{blue}%m%f %F{yellow}%3~%f $ \'' \
         > .bashrc; \
         cp .bashrc .zshrc; \
-        chmod +x /opt/cms/entrypoint.sh;
+        sudo chmod 755 /opt/cms/entrypoint.sh;
 
 ENTRYPOINT ["/opt/cms/entrypoint.sh"]
 CMD     ["/bin/zsh"]
