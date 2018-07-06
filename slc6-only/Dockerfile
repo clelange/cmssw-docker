@@ -30,7 +30,7 @@ RUN yum update -y && yum install -y \
     yum install -y -q wget git && \
     yum clean -y all
 
-RUN adduser cmsusr && \
+RUN groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 cmsusr && \
     echo "cmsusr ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers
 
 WORKDIR /home/cmsusr

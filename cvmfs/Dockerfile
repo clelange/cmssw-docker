@@ -51,7 +51,7 @@ ADD run-cvmfs.sh /etc/cvmfs/run-cvmfs.sh
 RUN chmod uga+rx /etc/cvmfs/run-cvmfs.sh
 ADD etc-cvmfs-default-local /etc/cvmfs/default.local
 
-RUN adduser cmsusr && \
+RUN groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 cmsusr && \
     echo "cmsusr ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers
 
 WORKDIR /home/cmsusr

@@ -31,8 +31,9 @@ RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa
         strace && \
         yum clean -y all
 
-RUN     groupadd -g 500 cmsinst && adduser -u 500 -g 500 cmsinst && install -d /opt && install -d -o cmsinst /opt/cms && \
-        groupadd -g 501 cmsusr && adduser -u 501 -g 501 cmsusr
+RUN     groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 cmsusr && \
+        groupadd -g 1001 cmsinst && adduser -u 1001 -g 1001 cmsinst && \
+        install -d /opt && install -d -o cmsinst /opt/cms
 
 USER    cmsinst
 WORKDIR /opt/cms
