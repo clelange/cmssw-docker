@@ -1,5 +1,5 @@
 FROM cern/slc6-base
-MAINTAINER Clemens Lange "clemens.lange@cern.ch"
+LABEL maintainer="Clemens Lange <clemens.lange@cern.ch>"
 
 ARG SCRAM_ARCH=slc6_amd64_gcc481
 ARG CMSSW_VERSION=CMSSW_7_1_25

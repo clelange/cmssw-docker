@@ -1,7 +1,7 @@
 ##
 ## A container where CernVM-FS is up and running for CMSSW
 FROM cern/slc6-base
-LABEL maintainer="Clemens Lange clemens.lange@cern.ch"
+LABEL maintainer="Clemens Lange <clemens.lange@cern.ch>"
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
