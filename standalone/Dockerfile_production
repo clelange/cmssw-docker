@@ -18,7 +18,6 @@ LABEL   org.label-schema.build-date=$BUILD_DATE \
         org.label-schema.version=$VERSION \
         org.label-schema.schema-version="1.0"
 
-CMD     /bin/bash
 RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa-libGLU-devel \
         libXmu libXpm \
         HEP_OSlibs_SL6 wget git \
@@ -50,15 +49,15 @@ RUN     /bin/cp -f /opt/cms/cmsset_default.sh  /etc/profile.d/
 
 USER    cmsusr
 WORKDIR /home/cmsusr
+ENV     HOME=/home/cmsusr
 ENV     CMSSW_VERSION=${CMSSW_VERSION}
 ENV     SCRAM_ARCH=${SCRAM_ARCH}
-RUN     echo $'source /opt/cms/cmsset_default.sh; \n\
-        scramv1 project CMSSW ${CMSSW_VERSION}; \n\
-        cd ${CMSSW_VERSION}/src; \n\
-        eval `scramv1 runtime -sh`; \n\
-        export PS1=\'[\\t] \\e[91m\\u\\e[0m@\\e[34m\\h \\e[36m\\w \\e[0m$ \'; \n\
+ADD     entrypoint.sh /opt/cms/entrypoint.sh
+RUN     echo $'export PS1=\'[\\t] \\e[91m\\u\\e[0m@\\e[34m\\h \\e[36m\\w \\e[0m$ \'; \n\
         export PROMPT=\'[%*] %F{red}%n%f@%F{blue}%m%f %F{yellow}%3~%f $ \'' \
         > .bashrc; \
-        cp .bashrc .zshrc;
+        cp .bashrc .zshrc; \
+        chmod +x /opt/cms/entrypoint.sh;
 
-# ENTRYPOINT /bin/zsh
+ENTRYPOINT ["/opt/cms/entrypoint.sh"]
+CMD     ["/bin/zsh"]
