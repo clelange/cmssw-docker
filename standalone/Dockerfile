@@ -10,8 +10,6 @@ LABEL maintainer="Clemens Lange <clemens.lange@cern.ch>"
 
 ARG SCRAM_ARCH=slc6_amd64_gcc481
 ARG CMSSW_VERSION=CMSSW_7_1_25_patch5
-# ARG CMSSW_VERSION=CMSSW_7_1_25
-# ARG PATCH=patch5
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
@@ -19,7 +17,7 @@ ARG VCS_REF
 ARG VCS_URL
 ARG VERSION
 LABEL   org.label-schema.build-date=$BUILD_DATE \
-        org.label-schema.name="CMSSW Docker standalone images" \
+        org.label-schema.name="CMSSW Docker standalone images ${SCRAM_ARCH} ${CMSSW_VERSION}" \
         org.label-schema.description="Provide completely offline-runnable CMSSW images." \
         org.label-schema.url="http://cms-sw.github.io/" \
         org.label-schema.vcs-ref=$VCS_REF \
@@ -28,7 +26,9 @@ LABEL   org.label-schema.build-date=$BUILD_DATE \
         org.label-schema.version=$VERSION \
         org.label-schema.schema-version="1.0"
 
-USER    root
+# cannot install CMSSW as root
+USER    cmsinst
+WORKDIR /opt/cms
 
 RUN     wget -O /opt/cms/bootstrap.sh http://cmsrep.cern.ch/cmssw/repos/bootstrap.sh \
         && sh /opt/cms/bootstrap.sh setup -r cms -architecture ${SCRAM_ARCH} -server cmsrep.cern.ch \
@@ -38,7 +38,7 @@ RUN     wget -O /opt/cms/bootstrap.sh http://cmsrep.cern.ch/cmssw/repos/bootstra
         && /opt/cms/common/cmspkg -a ${SCRAM_ARCH} clean
 
 USER    root
-RUN     /bin/cp -f /opt/cms/cmsset_default.sh  /etc/profile.d/
+RUN     /bin/cp -f /opt/cms/cmsset_default.sh /etc/profile.d/
 
 USER    cmsusr
 WORKDIR /home/cmsusr
