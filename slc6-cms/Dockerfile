@@ -28,14 +28,16 @@ USER root
 WORKDIR /root
 
 RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa-libGLU-devel \
-        libXmu libXpm \
+        libXmu libXpm libSM libXft libXext \
         HEP_OSlibs_SL6 wget git \
+        glibc-devel.i686 glibc-devel \
         tcsh zsh tcl \
         perl-ExtUtils-Embed perl-libwww-perl \
         compat-libstdc++-33 \
         zip e2fsprogs \
         CERN-CA-certs voms-clients-cpp ca-policy-lcg \
         krb5-devel cern-wrappers krb5-workstation \
+        glibc-headers time \
         strace sudo && \
         yum clean -y all
 
@@ -45,18 +47,20 @@ RUN     groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 cmsusr && \
         install -d /opt && install -d -o cmsinst /opt/cms
 
 # Make Images grid/singularity compatible
-RUN mkdir -p /cvmfs /afs /eos
+RUN mkdir -p /cvmfs /afs /eos /opt/cms
 
 # Add a couple of useful files to cmsusr account
 WORKDIR /home/cmsusr
 USER cmsusr
 ENV USER cmsusr
 ENV HOME /home/cmsusr
-ENV VO_CMS_SW_DIR       /cvmfs/cms.cern.ch
-ENV CMS_LOCAL_ROOT_BASE /cvmfs/cms.cern.ch
 
 ADD dot-pythonrc.py $HOME/.pythonrc.py
 ADD dot-bashrc      $HOME/.bashrc
 ADD dot-bashrc      $HOME/.zshrc
 
+ADD     entrypoint.sh /opt/cms/entrypoint.sh
+RUN     sudo chmod 755 /opt/cms/entrypoint.sh
+
+ENTRYPOINT ["/opt/cms/entrypoint.sh"]
 CMD     ["/bin/zsh"]

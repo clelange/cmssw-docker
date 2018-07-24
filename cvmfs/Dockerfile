@@ -1,12 +1,18 @@
-##
-## A container where CernVM-FS is up and running for CMSSW
-FROM cern/slc6-base
+# A container where CernVM-FS is up and running for CMSSW
+
+# Make the base image configurable:
+ARG BASEIMAGE=clelange/slc6-cms:latest
+
+# Set up the SLC6 CMSSW base:
+FROM ${BASEIMAGE}
+
 LABEL maintainer="Clemens Lange <clemens.lange@cern.ch>"
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VCS_URL
+ARG VERSION
 LABEL   org.label-schema.build-date=$BUILD_DATE \
         org.label-schema.name="CMSSW Docker images using CVMFS" \
         org.label-schema.description="Provide lightweight images for running CMSSW." \
@@ -22,22 +28,14 @@ USER root
 # install cvmfs repos
 ADD etc-yum-cernvm.repo /etc/yum.repos.d/cernvm.repo
 
-# Install rpms
-RUN yum update -y && yum install -y \
-    cvmfs cvmfs-config-default \
-    fuse sudo \
-    glibc-headers time \
-    man nano openssh-server openssl098e libXext libXpm libXft libSM \
-	zsh \
-    glibc-devel.i686 glibc-devel && \
-    yum install -y -q wget git \
-    openafs-krb5 openafs-client openafs-module-tools && \
-    yum clean -y all
+RUN     yum install -y cvmfs cvmfs-config-default fuse && \
+        yum clean -y all
 
+# afs does not work when building on Mac
 # add kerberos and afs configs
-ADD krb5.conf /etc/krb5.conf
-ADD afs/etc /usr/vice/etc
-ADD openafs.ko /lib/modules/2.6.32-696.30.1.el6.x86_64/fs/openafs/openafs.ko
+# ADD krb5.conf /etc/krb5.conf
+# ADD afs/etc /usr/vice/etc
+# ADD openafs.ko /lib/modules/2.6.32-696.30.1.el6.x86_64/fs/openafs/openafs.ko
 # RUN echo /lib/modules/2.6.32-696.30.1.el6.x86_64/fs/openafs/openafs.ko | openafs-modules --add-modules && \
     # /sbin/chkconfig --add afs && \
     # /sbin/service afs start
@@ -51,18 +49,13 @@ ADD run-cvmfs.sh /etc/cvmfs/run-cvmfs.sh
 RUN chmod uga+rx /etc/cvmfs/run-cvmfs.sh
 ADD etc-cvmfs-default-local /etc/cvmfs/default.local
 
-RUN groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 cmsusr && \
-    echo "cmsusr ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers
-
 WORKDIR /home/cmsusr
 USER cmsusr
 ENV USER cmsusr
 ENV HOME /home/cmsusr
-ENV VO_CMS_SW_DIR       /cvmfs/cms.cern.ch
-ENV CMS_LOCAL_ROOT_BASE /cvmfs/cms.cern.ch
 
-ADD dot-pythonrc.py $HOME/.pythonrc.py
-ADD dot-bashrc      $HOME/.bashrc
-ADD dot-bashrc      $HOME/.zshrc
+ADD     entrypoint.sh /opt/cms/entrypoint.sh
+RUN     sudo chmod 755 /opt/cms/entrypoint.sh
 
-ENTRYPOINT /bin/zsh
+ENTRYPOINT ["/opt/cms/entrypoint.sh"]
+CMD     ["/bin/zsh"]

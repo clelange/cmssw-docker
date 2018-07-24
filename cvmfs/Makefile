@@ -7,8 +7,8 @@ build: docker_build output
 release: docker_build docker_push output
 
 # Image can be overidden with env var.
-DOCKER_IMAGE ?= clelange/slc6-cms
-CERN_IMAGE ?= gitlab-registry.cern.ch/clange/cmssw-docker/slc6-cms
+DOCKER_IMAGE ?= clelange/cmssw-cvmfs
+CERN_IMAGE ?= gitlab-registry.cern.ch/clange/cmssw-docker/cmssw-cvmfs
 
 # Get the latest commit.
 GIT_COMMIT = $(strip $(shell git rev-parse --short HEAD))
