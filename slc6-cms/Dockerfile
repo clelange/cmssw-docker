@@ -44,6 +44,9 @@ RUN     groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 cmsusr && \
         groupadd -g 1001 cmsinst && adduser -u 1001 -g 1001 cmsinst && \
         install -d /opt && install -d -o cmsinst /opt/cms
 
+# Make Images grid/singularity compatible
+RUN mkdir -p /cvmfs /afs /eos
+
 # Add a couple of useful files to cmsusr account
 WORKDIR /home/cmsusr
 USER cmsusr
