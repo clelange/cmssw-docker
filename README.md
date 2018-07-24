@@ -4,9 +4,9 @@ Dockerfiles for CMSSW
 
 There are different sets of Dockerfiles in this repository:
 
-- [standalone](standalone) images [![](https://images.microbadger.com/badges/image/clelange/cmssw.svg)](https://microbadger.com/images/clelange/cmssw "Get your own image badge on microbadger.com")
-- [CVMFS](cvmfs)-based images
-- [SLC6-only](slc6-only) images [![](https://images.microbadger.com/badges/image/clelange/cmssw-slc6-only.svg)](https://microbadger.com/images/clelange/cmssw-slc6-only "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/clelange/cmssw-slc6-only.svg)](https://microbadger.com/images/clelange/cmssw-slc6-only "Get your own version badge on microbadger.com")
+- [standalone](standalone) images [![](https://images.microbadger.com/badges/image/clelange/cmssw.svg)](https://microbadger.com/images/clelange/cmssw)
+- [cvmfs](cvmfs)-based images
+- [slc6-cms](slc6-cms) images [![](https://images.microbadger.com/badges/image/clelange/slc6-cms.svg)](https://microbadger.com/images/clelange/slc6-cms) [![](https://images.microbadger.com/badges/version/clelange/cmssw-slc6-only.svg)](https://microbadger.com/images/clelange/slc6-cms)
 
 The non-standalone images need a network connection, and can be slow, since CMSSW is loaded via the network. The advantage is that they are much smaller (few hundreds of MB) while the standalone images contain the full CMSSW release (>= 15 GB).
 
@@ -49,7 +49,7 @@ Since these containers load CMSSW via the network, any CMSSW version can be set 
 docker build -t cmssw-cvmfs .
 ```
 
-### SLC6-only version
+### SLC6-CMS version
 
 This image does not know about CMSSW, it is only an SLC6 image with some additional packages installed. CVMFS needs to be mounted as volume (see below). A `Makefile` is available to build the image:
 
