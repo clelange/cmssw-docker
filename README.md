@@ -60,6 +60,10 @@ make docker_push
 
 ## Running containers
 
+All images are available in the CERN GitLab container registry as well: [https://gitlab.cern.ch/clange/cmssw-docker/container_registry](https://gitlab.cern.ch/clange/cmssw-docker/container_registry)
+
+In order to use these images, the run commands below need to be changed prepending `gitlab-registry.cern.ch/clange/cmssw-docker`.
+
 ### Standalone version
 
 Currently supported for automatic CMSSW setup are `bash` and `zshrc`.
@@ -67,7 +71,7 @@ Currently supported for automatic CMSSW setup are `bash` and `zshrc`.
 `bash`:
 
 ```shell
-docker run --rm -it cmssw:9_2_1 /bin/bash
+docker run --rm -it clelange/cmssw:9_2_1 /bin/bash
 ```
 
 `zsh`:

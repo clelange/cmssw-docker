@@ -12,6 +12,7 @@ LABEL maintainer="Clemens Lange <clemens.lange@cern.ch>"
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VCS_URL
+ARG VERSION
 LABEL   org.label-schema.build-date=$BUILD_DATE \
         org.label-schema.name="SLC6 CMS base OS" \
         org.label-schema.description="SLC6 OS capable of using/running CMS software release(s)." \
