@@ -41,6 +41,15 @@ RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa
         strace sudo && \
         yum clean -y all
 
+RUN     wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo && \
+        mv EGI-trustanchors.repo /etc/yum.repos.d/ && \
+        wget http://linuxsoft.cern.ch/wlcg/wlcg-sl6.repo && \
+        mv wlcg-sl6.repo /etc/yum.repos.d/ && \
+        wget http://linuxsoft.cern.ch/wlcg/RPM-GPG-KEY-wlcg && \
+        mv RPM-GPG-KEY-wlcg /etc/pki/rpm-gpg/ && \
+        yum install -y ca-policy-egi-core wlcg-repo.noarch wlcg-voms-cms && \
+        yum clean -y all
+
 RUN     groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 cmsusr && \
         echo "cmsusr ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers && \
         groupadd -g 1001 cmsinst && adduser -u 1001 -g 1001 cmsinst && \

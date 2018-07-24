@@ -34,7 +34,7 @@ RUN     wget -O /opt/cms/bootstrap.sh http://cmsrep.cern.ch/cmssw/repos/bootstra
         && sh /opt/cms/bootstrap.sh setup -r cms -architecture ${SCRAM_ARCH} -server cmsrep.cern.ch \
         && /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+local-cern-siteconf+sm111124 \
         && /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+cmssw+${CMSSW_VERSION%_p*} \
-        && if [[ $CMSSW_VERSION = *"patch"* ]]; then /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+cmssw-patch+${CMSSW_VERSION##*_}; fi \
+        && if [[ $CMSSW_VERSION = *"patch"* ]]; then /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+cmssw-patch+${CMSSW_VERSION}; fi \
         && /opt/cms/common/cmspkg -a ${SCRAM_ARCH} clean
 
 USER    root
