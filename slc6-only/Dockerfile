@@ -1,7 +1,7 @@
 ##
 ## A container where CernVM-FS is up and running for CMSSW
 FROM cern/slc6-base
-LABEL maintainer="Clemens Lange clemens.lange@cern.ch"
+LABEL maintainer="Clemens Lange <clemens.lange@cern.ch>"
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
@@ -30,7 +30,7 @@ RUN yum update -y && yum install -y \
     yum install -y -q wget git && \
     yum clean -y all
 
-RUN adduser cmsusr && \
+RUN groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 cmsusr && \
     echo "cmsusr ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers
 
 WORKDIR /home/cmsusr
