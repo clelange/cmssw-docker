@@ -6,17 +6,9 @@ build: docker_build output
 # Build and push Docker image
 release: docker_build docker_push output
 
-# variables need to be overwritten
-SCRAM_ARCH=slc6_amd64_gcc481
-CMSSW_VERSION=CMSSW_7_1_25_patch5
-
-# function to return base version
-get_version = $(strip $(subst CMSSW_, ,$1))
-BASE_VERSION = $(call get_version,$(CMSSW_VERSION))
-
 # Image can be overidden with env var.
-DOCKER_IMAGE ?= clelange/cmssw
-CERN_IMAGE ?= gitlab-registry.cern.ch/clange/cmssw-docker/cmssw_$(BASE_VERSION)
+DOCKER_IMAGE ?= clelange/slc6-cms
+CERN_IMAGE ?= gitlab-registry.cern.ch/clange/cmssw-docker/slc6-cms
 
 # Get the latest commit.
 GIT_COMMIT = $(strip $(shell git rev-parse --short HEAD))
@@ -55,25 +47,26 @@ docker_build:
 	# Build Docker image
 	docker build \
   --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-  --build-arg SCRAM_ARCH=$(SCRAM_ARCH) \
-  --build-arg CMSSW_VERSION=$(CMSSW_VERSION) \
   --build-arg VERSION=$(CODE_VERSION) \
   --build-arg VCS_URL=`git config --get remote.origin.url` \
   --build-arg VCS_REF=$(GIT_COMMIT) \
-	-t $(DOCKER_IMAGE):$(BASE_VERSION) \
+	-t $(DOCKER_IMAGE):$(DOCKER_TAG) \
 	--compress --squash .
+	# Tag image as latest
+	docker tag $(DOCKER_IMAGE):$(DOCKER_TAG) $(DOCKER_IMAGE):latest
 
 docker_push:
 	# Tag image also for CERN GitLab container registry
-	docker tag $(DOCKER_IMAGE):$(BASE_VERSION) $(CERN_IMAGE):$(DOCKER_TAG)
-	docker tag $(DOCKER_IMAGE):$(BASE_VERSION) $(CERN_IMAGE):latest
+	docker tag $(DOCKER_IMAGE):$(DOCKER_TAG) $(CERN_IMAGE):$(DOCKER_TAG)
+	docker tag $(DOCKER_IMAGE):$(DOCKER_TAG) $(CERN_IMAGE):latest
 
 	# Push to DockerHub
-	docker push $(DOCKER_IMAGE):$(BASE_VERSION)
+	docker push $(DOCKER_IMAGE):$(DOCKER_TAG)
+	docker push $(DOCKER_IMAGE):latest
 
 	# Push to CERN GitLab container registry
 	docker push $(CERN_IMAGE):$(DOCKER_TAG)
 	docker push $(CERN_IMAGE):latest
 
 output:
-	@echo Docker Image: $(DOCKER_IMAGE):$(BASE_VERSION)
+	@echo Docker Image: $(DOCKER_IMAGE):$(DOCKER_TAG)

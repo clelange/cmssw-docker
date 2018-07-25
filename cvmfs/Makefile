@@ -7,13 +7,14 @@ build: docker_build output
 release: docker_build docker_push output
 
 # Image can be overidden with env var.
-DOCKER_IMAGE ?= clelange/cmssw-slc6-only
+DOCKER_IMAGE ?= clelange/cmssw-cvmfs
+CERN_IMAGE ?= gitlab-registry.cern.ch/clange/cmssw-docker/cmssw-cvmfs
 
 # Get the latest commit.
 GIT_COMMIT = $(strip $(shell git rev-parse --short HEAD))
 
-# Get the version number from the code
-CODE_VERSION = $(strip $(shell cat VERSION))
+# Get the date as version number
+CODE_VERSION = $(strip $(shell date +"%Y-%m-%d"))
 
 # Find out if the working directory is clean
 GIT_NOT_CLEAN_CHECK = $(shell git status --porcelain)
@@ -25,10 +26,6 @@ endif
 ifeq ($(MAKECMDGOALS),release)
 # Use the version number as the release tag.
 DOCKER_TAG = $(CODE_VERSION)
-
-ifndef CODE_VERSION
-$(error You need to create a VERSION file to build a release)
-endif
 
 # See what commit is tagged to match the version
 VERSION_COMMIT = $(strip $(shell git rev-list $(CODE_VERSION) -n 1 | cut -c1-7))
@@ -53,15 +50,23 @@ docker_build:
   --build-arg VERSION=$(CODE_VERSION) \
   --build-arg VCS_URL=`git config --get remote.origin.url` \
   --build-arg VCS_REF=$(GIT_COMMIT) \
-	-t $(DOCKER_IMAGE):$(DOCKER_TAG) .
-
-docker_push:
+	-t $(DOCKER_IMAGE):$(DOCKER_TAG) \
+	--compress --squash .
 	# Tag image as latest
 	docker tag $(DOCKER_IMAGE):$(DOCKER_TAG) $(DOCKER_IMAGE):latest
+
+docker_push:
+	# Tag image also for CERN GitLab container registry
+	docker tag $(DOCKER_IMAGE):$(DOCKER_TAG) $(CERN_IMAGE):$(DOCKER_TAG)
+	docker tag $(DOCKER_IMAGE):$(DOCKER_TAG) $(CERN_IMAGE):latest
 
 	# Push to DockerHub
 	docker push $(DOCKER_IMAGE):$(DOCKER_TAG)
 	docker push $(DOCKER_IMAGE):latest
+
+	# Push to CERN GitLab container registry
+	docker push $(CERN_IMAGE):$(DOCKER_TAG)
+	docker push $(CERN_IMAGE):latest
 
 output:
 	@echo Docker Image: $(DOCKER_IMAGE):$(DOCKER_TAG)
