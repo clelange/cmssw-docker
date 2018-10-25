@@ -44,6 +44,13 @@ make CMSSW_VERSION=CMSSW_7_1_25_patch5 SCRAM_ARCH=slc6_amd64_gcc481
 make docker_push CMSSW_VERSION=CMSSW_7_1_25_patch5 SCRAM_ARCH=slc6_amd64_gcc481
 ```
 
+Releases for other Linux distribution than SLC6 (here e.g. SLC5):
+
+```shell
+make CMSSW_VERSION=CMSSW_4_2_8 SCRAM_ARCH=slc5_amd64_gcc434 BASEIMAGE=clelange/slc5-cms:latest
+make docker_push CMSSW_VERSION=CMSSW_4_2_8 SCRAM_ARCH=slc5_amd64_gcc434 BASEIMAGE=clelange/slc5-cms:latest
+```
+
 ### CVMFS version
 
 Since these containers load CMSSW via the network, any CMSSW version can be set up.
