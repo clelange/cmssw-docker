@@ -7,6 +7,8 @@ if [ -f /cvmfs/cms.cern.ch/cmsset_default.sh ]; then
   source /cvmfs/cms.cern.ch/cmsset_default.sh
   echo "::: Setting up CMS environment... [done]"
 else
-  echo "::: ERROR: Could not set up CMS environment... [done]"
+  echo "::: Could not set up CMS environment... [ERROR]"
+  echo "::: /cvmfs/cms.cern.ch/cmsset_default.sh not found/available"
 fi
+
 exec "$@"
