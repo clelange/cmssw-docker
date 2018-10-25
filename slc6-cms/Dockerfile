@@ -43,6 +43,8 @@ RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa
 
 RUN     wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo && \
         mv EGI-trustanchors.repo /etc/yum.repos.d/ && \
+        wget http://repository.egi.eu/sw/production/cas/1/GPG-KEY-EUGridPMA-RPM-3 && \
+        mv GPG-KEY-EUGridPMA-RPM-3 /etc/pki/rpm-gpg/ && \
         wget http://linuxsoft.cern.ch/wlcg/wlcg-sl6.repo && \
         mv wlcg-sl6.repo /etc/yum.repos.d/ && \
         wget http://linuxsoft.cern.ch/wlcg/RPM-GPG-KEY-wlcg && \

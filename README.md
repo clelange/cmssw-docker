@@ -6,13 +6,14 @@ There are different sets of Dockerfiles in this repository:
 
 - [standalone](standalone) images [![](https://images.microbadger.com/badges/image/clelange/cmssw.svg)](https://microbadger.com/images/clelange/cmssw)
 - [cvmfs](cvmfs)-based images [![](https://images.microbadger.com/badges/image/clelange/cmssw-cvmfs.svg)](https://microbadger.com/images/clelange/cmssw-cvmfs) [![](https://images.microbadger.com/badges/version/clelange/cmssw-cvmfs.svg)](https://microbadger.com/images/clelange/cmssw-cvmfs)
+- [cc7-cms](cc7-cms) images [![](https://images.microbadger.com/badges/image/clelange/cc7-cms.svg)](https://microbadger.com/images/clelange/cc7-cms) [![](https://images.microbadger.com/badges/version/clelange/cc7-cms.svg)](https://microbadger.com/images/clelange/cc7-cms)
 - [slc6-cms](slc6-cms) images [![](https://images.microbadger.com/badges/image/clelange/slc6-cms.svg)](https://microbadger.com/images/clelange/slc6-cms) [![](https://images.microbadger.com/badges/version/clelange/slc6-cms.svg)](https://microbadger.com/images/clelange/slc6-cms)
 - [slc5-cms](slc5-cms) images [![](https://images.microbadger.com/badges/image/clelange/slc5-cms.svg)](https://microbadger.com/images/clelange/slc5-cms) [![](https://images.microbadger.com/badges/version/clelange/slc5-cms.svg)](https://microbadger.com/images/clelange/slc5-cms)
 
 
 The non-standalone images need a network connection, and can be slow, since CMSSW is loaded via the network. The advantage is that they are much smaller (few hundreds of MB) while the standalone images contain the full CMSSW release (>= 15 GB).
 
-All sets of images are currently based on (SLC6)[http://linux.web.cern.ch/linux/scientific6/].
+All sets of images with the exception of the standalone CMSSW_4_X_Y ones are currently based on (SLC6)[http://linux.web.cern.ch/linux/scientific6/].
 
 ## Building containers
 
@@ -52,9 +53,9 @@ make
 make docker_push
 ```
 
-### SLC5/SLC6-CMS version
+### SLC5/SLC6/CC7-CMS version
 
-This image does not know about CMSSW, it is only an SLC5/SLC6 image with some additional packages installed. CVMFS needs to be mounted as volume (see below):
+This image does not know about CMSSW, it is only an SLC5/SLC6/CC7 image with some additional packages installed. More information on Linux@CERN see the [CERN IT Linux webpage](http://linuxsoft.cern.ch/). CVMFS needs to be mounted as volume (see below):
 
 ```shell
 make

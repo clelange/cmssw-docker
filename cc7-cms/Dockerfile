@@ -1,9 +1,9 @@
-# SLC5 OS capable of using/running CMS software release(s).
+# CC7 OS capable of using/running CMS software release(s).
 
 # Make the base image configurable:
-ARG BASEIMAGE=cern/slc5-base:latest
+ARG BASEIMAGE=cern/cc7-base:latest
 
-# Set up the SLC5 CMSSW base:
+# Set up the CC7 CMSSW base:
 FROM ${BASEIMAGE}
 
 LABEL maintainer="Clemens Lange <clemens.lange@cern.ch>"
@@ -14,8 +14,8 @@ ARG VCS_REF
 ARG VCS_URL
 ARG VERSION
 LABEL   org.label-schema.build-date=$BUILD_DATE \
-        org.label-schema.name="SLC5 CMS base OS" \
-        org.label-schema.description="SLC5 OS capable of using/running CMS software release(s)." \
+        org.label-schema.name="CC7 CMS base OS" \
+        org.label-schema.description="CC7 OS capable of using/running CMS software release(s)." \
         org.label-schema.url="http://cms-sw.github.io/" \
         org.label-schema.vcs-ref=$VCS_REF \
         org.label-schema.vcs-url=$VCS_URL \
@@ -29,27 +29,27 @@ WORKDIR /root
 
 RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa-libGLU-devel \
         libXmu libXpm libSM libXft libXext \
-        wget git \
-        glibc-devel \
-        tcsh zsh tcl \
-        perl-libwww-perl \
-        compat-libstdc++-33 zip \
-        voms-clients-cpp \
-        krb5-devel cern-wrappers krb5-workstation \
-        time strace sudo && \
+        HEP_OSlibs wget git \
+        glibc-devel.i686 glibc-devel \
+        zsh \
+        perl-ExtUtils-Embed perl-libwww-perl \
+        compat-libstdc++-33 \
+        zip e2fsprogs \
+        CERN-CA-certs voms-clients-cpp \
+        krb5-devel \
+        glibc-headers time \
+        strace sudo && \
         yum clean -y all
 
 RUN     wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo && \
         mv EGI-trustanchors.repo /etc/yum.repos.d/ && \
         wget http://repository.egi.eu/sw/production/cas/1/GPG-KEY-EUGridPMA-RPM-3 && \
         mv GPG-KEY-EUGridPMA-RPM-3 /etc/pki/rpm-gpg/ && \
-        wget http://linuxsoft.cern.ch/wlcg/wlcg-sl5.repo && \
-        mv wlcg-sl5.repo /etc/yum.repos.d/ && \
+        wget http://linuxsoft.cern.ch/wlcg/wlcg-centos7.repo && \
+        mv wlcg-centos7.repo /etc/yum.repos.d/ && \
         wget http://linuxsoft.cern.ch/wlcg/RPM-GPG-KEY-wlcg && \
         mv RPM-GPG-KEY-wlcg /etc/pki/rpm-gpg/ && \
-        wget http://grid-deployment.web.cern.ch/grid-deployment/download/HEP/repo/HEP_OSlibs.repo && \
-        mv HEP_OSlibs.repo /etc/yum.repos.d/ && \
-        yum install -y HEP_OSlibs_SL5 ca-policy-lcg ca-policy-egi-core wlcg-repo.noarch wlcg-voms-cms && \
+        yum install -y ca-policy-egi-core wlcg-repo.noarch wlcg-voms-cms && \
         yum clean -y all
 
 RUN     groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 cmsusr && \
