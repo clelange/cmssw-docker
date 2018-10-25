@@ -31,18 +31,20 @@ RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa
         libXmu libXpm libSM libXft libXext \
         HEP_OSlibs wget git \
         glibc-devel.i686 glibc-devel \
-        tcsh zsh tcl \
+        zsh \
         perl-ExtUtils-Embed perl-libwww-perl \
         compat-libstdc++-33 \
         zip e2fsprogs \
         CERN-CA-certs voms-clients-cpp \
-        krb5-devel cern-wrappers krb5-workstation \
+        krb5-devel \
         glibc-headers time \
         strace sudo && \
         yum clean -y all
 
 RUN     wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo && \
         mv EGI-trustanchors.repo /etc/yum.repos.d/ && \
+        wget http://repository.egi.eu/sw/production/cas/1/GPG-KEY-EUGridPMA-RPM-3 && \
+        mv GPG-KEY-EUGridPMA-RPM-3 /etc/pki/rpm-gpg/ && \
         wget http://linuxsoft.cern.ch/wlcg/wlcg-centos7.repo && \
         mv wlcg-centos7.repo /etc/yum.repos.d/ && \
         wget http://linuxsoft.cern.ch/wlcg/RPM-GPG-KEY-wlcg && \
