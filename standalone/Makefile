@@ -9,6 +9,7 @@ release: docker_build docker_push output
 # variables need to be overwritten
 SCRAM_ARCH=slc6_amd64_gcc481
 CMSSW_VERSION=CMSSW_7_1_25_patch5
+BASEIMAGE=clelange/slc6-cms:latest
 
 # function to return base version
 get_version = $(strip $(subst CMSSW_, ,$1))
@@ -55,6 +56,7 @@ docker_build:
 	# Build Docker image
 	docker build \
   --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+  --build-arg BASEIMAGE=$(BASEIMAGE) \
   --build-arg SCRAM_ARCH=$(SCRAM_ARCH) \
   --build-arg CMSSW_VERSION=$(CMSSW_VERSION) \
   --build-arg VERSION=$(CODE_VERSION) \
