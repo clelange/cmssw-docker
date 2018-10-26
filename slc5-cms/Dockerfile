@@ -34,7 +34,8 @@ RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa
         tcsh zsh tcl \
         perl-libwww-perl \
         compat-libstdc++-33 zip \
-        voms-clients-cpp \
+        voms-clients-cpp python-simplejson \
+        tk mesa-libGLU mesa-libGL \
         krb5-devel cern-wrappers krb5-workstation \
         time strace sudo && \
         yum clean -y all
