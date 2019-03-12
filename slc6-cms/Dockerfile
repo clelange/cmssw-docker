@@ -52,7 +52,7 @@ RUN     wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI
         yum install -y ca-policy-egi-core wlcg-repo.noarch wlcg-voms-cms && \
         yum clean -y all
 
-RUN     groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 cmsusr && \
+RUN     groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 -G root cmsusr && \
         echo "cmsusr ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers && \
         groupadd -g 1001 cmsinst && adduser -u 1001 -g 1001 cmsinst && \
         install -d /opt && install -d -o cmsinst /opt/cms
