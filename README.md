@@ -4,16 +4,20 @@ Dockerfiles for CMSSW
 
 There are different sets of Dockerfiles in this repository:
 
-- [standalone](standalone) images [![](https://images.microbadger.com/badges/image/clelange/cmssw.svg)](https://microbadger.com/images/clelange/cmssw)
-- [cvmfs](cvmfs)-based images [![](https://images.microbadger.com/badges/image/clelange/cmssw-cvmfs.svg)](https://microbadger.com/images/clelange/cmssw-cvmfs) [![](https://images.microbadger.com/badges/version/clelange/cmssw-cvmfs.svg)](https://microbadger.com/images/clelange/cmssw-cvmfs)
-- [cc7-cms](cc7-cms) images [![](https://images.microbadger.com/badges/image/clelange/cc7-cms.svg)](https://microbadger.com/images/clelange/cc7-cms) [![](https://images.microbadger.com/badges/version/clelange/cc7-cms.svg)](https://microbadger.com/images/clelange/cc7-cms)
-- [slc6-cms](slc6-cms) images [![](https://images.microbadger.com/badges/image/clelange/slc6-cms.svg)](https://microbadger.com/images/clelange/slc6-cms) [![](https://images.microbadger.com/badges/version/clelange/slc6-cms.svg)](https://microbadger.com/images/clelange/slc6-cms)
-- [slc5-cms](slc5-cms) images [![](https://images.microbadger.com/badges/image/clelange/slc5-cms.svg)](https://microbadger.com/images/clelange/slc5-cms) [![](https://images.microbadger.com/badges/version/clelange/slc5-cms.svg)](https://microbadger.com/images/clelange/slc5-cms)
-
+- [standalone](standalone) images [![standalone container badge](https://images.microbadger.com/badges/image/clelange/cmssw.svg)](https://microbadger.com/images/clelange/cmssw)
+- [cc7-cvmfs](cc7-cvmfs)-based images [![cc7-cvmfs container badge](https://images.microbadger.com/badges/image/clelange/cc7-cmssw-cvmfs.svg)](https://microbadger.com/images/clelange/cc7-cmssw-cvmfs) [![cc7-cvmfs container version](https://images.microbadger.com/badges/version/clelange/cc7-cmssw-cvmfs.svg)](https://microbadger.com/images/clelange/cc7-cmssw-cvmfs)
+- [slc6-cvmfs](slc6-cvmfs)-based images [![slc6-cvmfs container badge](https://images.microbadger.com/badges/image/clelange/slc6-cmssw-cvmfs.svg)](https://microbadger.com/images/clelange/slc6-cmssw-cvmfs) [![slc6-cvmfs container version](https://images.microbadger.com/badges/version/clelange/slc6-cmssw-cvmfs.svg)](https://microbadger.com/images/clelange/slc6-cmssw-cvmfs)
+- [cc7-cms](cc7-cms) images [![cc7-cms container badge](https://images.microbadger.com/badges/image/clelange/cc7-cms.svg)](https://microbadger.com/images/clelange/cc7-cms) [![cc7-cms container version](https://images.microbadger.com/badges/version/clelange/cc7-cms.svg)](https://microbadger.com/images/clelange/cc7-cms)
+- [slc6-cms](slc6-cms) images [![slc6-cms container badge](https://images.microbadger.com/badges/image/clelange/slc6-cms.svg)](https://microbadger.com/images/clelange/slc6-cms) [![slc6-cms container version](https://images.microbadger.com/badges/version/clelange/slc6-cms.svg)](https://microbadger.com/images/clelange/slc6-cms)
+- [slc5-cms](slc5-cms) images [![slc5-cms container badge](https://images.microbadger.com/badges/image/clelange/slc5-cms.svg)](https://microbadger.com/images/clelange/slc5-cms) [![slc5-cms container version](https://images.microbadger.com/badges/version/clelange/slc5-cms.svg)](https://microbadger.com/images/clelange/slc5-cms)
 
 The non-standalone images need a network connection, and can be slow, since CMSSW is loaded via the network. The advantage is that they are much smaller (few hundreds of MB) while the standalone images contain the full CMSSW release (>= 15 GB).
 
-All sets of images with the exception of the standalone CMSSW_4_X_Y ones are currently based on (SLC6)[http://linux.web.cern.ch/linux/scientific6/].
+The images are based on different sets of CERN Linux distributions:
+
+- [Scientific Linux 5 (SLC5)](http://linux.web.cern.ch/linux/scientific5/).
+- [Scientific Linux 6 (SLC5)](http://linux.web.cern.ch/linux/scientific6/).
+- [CERN CentOS 7 (CC7)](http://linux.web.cern.ch/linux/centos7/).
 
 ## Building containers
 
@@ -26,7 +30,7 @@ CERN_IMAGE ?= gitlab-registry.cern.ch/clange/cmssw-docker/cmssw_$(BASE_VERSION)
 
 where `$(BASE_VERSION)` is extracted automatically from the CMSSW release version, e.g. `5_3_32` for `CMSSW_5_3_32`.
 
-### Standalone version
+### Building standalone versions
 
 Examples are given for different `CMSSW_VERSION` and `SCRAM_ARCH`:
 
@@ -51,7 +55,7 @@ make CMSSW_VERSION=CMSSW_4_2_8 SCRAM_ARCH=slc5_amd64_gcc434 BASEIMAGE=clelange/s
 make docker_push CMSSW_VERSION=CMSSW_4_2_8 SCRAM_ARCH=slc5_amd64_gcc434 BASEIMAGE=clelange/slc5-cms:latest
 ```
 
-### CVMFS version
+### Building CVMFS versions
 
 Since these containers load CMSSW via the network, any CMSSW version can be set up.
 
@@ -60,9 +64,9 @@ make
 make docker_push
 ```
 
-### SLC5/SLC6/CC7-CMS version
+### Building SLC5/SLC6/CC7-CMS versions
 
-This image does not know about CMSSW, it is only an SLC5/SLC6/CC7 image with some additional packages installed. More information on Linux@CERN see the [CERN IT Linux webpage](http://linuxsoft.cern.ch/). CVMFS needs to be mounted as volume (see below):
+These images do not know about CMSSW, they are only an SLC5/SLC6/CC7 image with some additional packages installed. More information on Linux@CERN see the [CERN IT Linux webpage](http://linuxsoft.cern.ch/). CVMFS needs to be mounted as volume (see below):
 
 ```shell
 make
@@ -73,9 +77,9 @@ make docker_push
 
 All images are available in [docker hub](http://hub.docker.com/r/clelange/) as well as in the [CERN GitLab container registry](https://gitlab.cern.ch/clange/cmssw-docker/container_registry). In order to use these images, the run commands below need to be changed replacing `clelange` by `gitlab-registry.cern.ch/clange/cmssw-docker`. For the standalone images the image name needs to be adjust as well, see example below.
 
-### Standalone version
+### Running the standalone version
 
-Currently supported for automatic CMSSW setup are `bash` and `zshrc`.
+Currently supported for automatic CMSSW setup are `bash` and `zsh`.
 
 `bash`:
 
@@ -95,12 +99,12 @@ Example for CERN GitLab container registry:
 docker run --rm -it gitlab-registry.cern.ch/clange/cmssw-docker/cmssw_9_2_1 /bin/zsh
 ```
 
-### CVMFS version
+### Running the CVMFS version
 
 Setting up CVMFS uses `fuse`, which needs special rights from docker:
 
 ```shell
-docker run --rm --cap-add SYS_ADMIN --device /dev/fuse -it clelange/cmssw-cvmfs /bin/bash
+docker run --rm --cap-add SYS_ADMIN --device /dev/fuse -it clelange/slc6-cmssw-cvmfs /bin/bash
 ```
 
 Alternatively, one can also just use `--privileged` instead of `--cap-add SYS_ADMIN --device /dev/fuse`, see the [Docker run reference](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities).
@@ -119,7 +123,7 @@ sudo setenforce 0
 
 This can be changed permanently by editing `/etc/selinux/config`, setting `SELINUX` to `permissive` or `disabled`.
 
-### SLC5/SLC6-only version
+### Running the SLC5/SLC6/CC7-only version
 
 On a machine that has `/cvmfs` mounted (and available to the docker process):
 
@@ -144,6 +148,8 @@ docker run --rm -it --volume-driver cvmfs -v cms.cern.ch:/cvmfs/cms.cern.ch -v c
 If you would like to be able to get a voms/grid proxy, mount your `.globus` directory by adding `-v ~/.globus:/home/cmsusr/.globus` to your `docker run` command.
 
 ## Testing
+
+To test if everything is working, start a container, set up the desired CMSSW release (in case of non-standalone images), download the [GenXSecAnalyzer](https://twiki.cern.ch/twiki/bin/viewauth/CMS/HowToGenXSecAnalyzer#Running_the_GenXSecAnalyzer_on_a), and run it on a file:
 
 ```shell
 cmsrel CMSSW_5_3_32
