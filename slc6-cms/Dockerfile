@@ -71,7 +71,8 @@ ADD dot-bashrc      $HOME/.bashrc
 ADD dot-bashrc      $HOME/.zshrc
 
 ADD     entrypoint.sh /opt/cms/entrypoint.sh
-RUN     sudo chmod 755 /opt/cms/entrypoint.sh
+RUN     sudo chmod 755 /opt/cms/entrypoint.sh && \
+        sudo chown cmsusr /home/cmsusr
 
 ENTRYPOINT ["/opt/cms/entrypoint.sh"]
 CMD     ["/bin/zsh"]
