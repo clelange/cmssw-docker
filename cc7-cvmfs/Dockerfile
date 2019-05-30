@@ -1,7 +1,7 @@
 # A container where CernVM-FS is up and running for CMSSW
 
 # Make the base image configurable:
-ARG BASEIMAGE=clelange/slc6-cms:latest
+ARG BASEIMAGE=clelange/cc7-cms:latest
 
 # Set up the SLC6 CMSSW base:
 FROM ${BASEIMAGE}
@@ -14,7 +14,7 @@ ARG VCS_REF
 ARG VCS_URL
 ARG VERSION
 LABEL   org.label-schema.build-date=$BUILD_DATE \
-        org.label-schema.name="CMSSW Docker images using CVMFS" \
+        org.label-schema.name="CC7 CMSSW Docker images using CVMFS" \
         org.label-schema.description="Provide lightweight images for running CMSSW." \
         org.label-schema.url="http://cms-sw.github.io/" \
         org.label-schema.vcs-ref=$VCS_REF \

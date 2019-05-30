@@ -1,0 +1,8 @@
+CVMFS_REPOSITORIES=cms.cern.ch,cms-opendata-conddb.cern.ch
+#CVMFS_CACHE_BASE=/scratch/var/cache/cvmfs2
+CVMFS_QUOTA_LIMIT=2000
+
+# for inside CERN
+#CVMFS_HTTP_PROXY="http://ca-proxy.cern.ch:3128"
+# outside CERN or in general
+CVMFS_HTTP_PROXY="DIRECT"

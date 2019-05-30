@@ -1,0 +1,47 @@
+#!/bin/sh
+#
+# kill all processes using AFS with signal $1
+# referenced from the OpenAFS init script
+#
+# http://www.tu-chemnitz.de/urz/afs/openafs/download/suse-7.2/SOURCES/openafs-killafs
+# CERN/JI: extended to loop and log
+
+if [ $# -eq 1 ]; then
+	SIGNAL=$1
+else
+	SIGNAL=TERM
+fi
+
+
+LOGGER=/usr/bin/logger
+if [ ! -x "$LOGGER" ]; then
+   LOGGER="echo "
+else
+   LOGGER="/usr/bin/logger -s -t killafs -p user.warn -- "
+fi
+
+if [ ! -x /usr/sbin/lsof ]; then
+        $LOGGER "lsof not found - not killing any AFS processes"
+	exit
+fi
+
+PIDS=''
+TRY=1
+MAXTRY=10
+$LOGGER "stopping all processes on AFS via $SIGNAL"
+while [ "$TRY" -lt "$MAXTRY" ]; do
+    AFS_LSOF=`/usr/sbin/lsof -Fpnc /afs `
+    PIDS=`echo "$AFS_LSOF" | grep '^p[1-9]' | sed -e 's/^p//'`
+    if [ -z "$PIDS" ]; then
+       break
+    fi
+    AFS_COMMANDSFILES=`echo "$AFS_LSOF" | grep '^[cn]' | head -10 | sed -e 's/^c//' -e 's/^n/  /'`
+    AFS_PIDCOUNT=`echo "$PIDS" | wc -w`
+    if [ "$TRY" -gt 1 ]; then
+       $LOGGER "(${TRY}/${MAXTRY}): $AFS_PIDCOUNT programs on AFS, after signal:$SIGNAL [first 10]"
+       $LOGGER "$AFS_COMMANDSFILES"
+    fi
+    /bin/kill "-$SIGNAL" $PIDS >/dev/null 2>&1
+    sleep 5
+    let TRY++
+done
