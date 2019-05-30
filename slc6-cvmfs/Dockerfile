@@ -45,6 +45,7 @@ RUN mkdir -p /cvmfs/cms.cern.ch && \
     echo "cms.cern.ch /cvmfs/cms.cern.ch cvmfs defaults 0 0" >> /etc/fstab && \
     mkdir -p /cvmfs/cms-opendata-conddb.cern.ch && \
     echo "cms-opendata-conddb.cern.ch /cvmfs/cms-opendata-conddb.cern.ch cvmfs defaults 0 0" >> /etc/fstab
+ADD etc-cvmfs-config.d-cms.cern.ch.local /etc/cvmfs/config.d/cms.cern.ch.local
 ADD run-cvmfs.sh /etc/cvmfs/run-cvmfs.sh
 RUN chmod uga+rx /etc/cvmfs/run-cvmfs.sh
 ADD etc-cvmfs-default-local /etc/cvmfs/default.local
