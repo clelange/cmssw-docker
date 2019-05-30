@@ -1,7 +1,7 @@
 # CC7 OS capable of using/running CMS software release(s).
 
 # Make the base image configurable:
-ARG BASEIMAGE=cern/cc7-base:latest
+ARG BASEIMAGE=cern/cc7-base:20190522
 
 # Set up the CC7 CMSSW base:
 FROM ${BASEIMAGE}
