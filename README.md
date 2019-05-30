@@ -142,3 +142,15 @@ docker run --rm -it --volume-driver cvmfs -v cms.cern.ch:/cvmfs/cms.cern.ch -v c
 ## Grid proxy
 
 If you would like to be able to get a voms/grid proxy, mount your `.globus` directory by adding `-v ~/.globus:/home/cmsusr/.globus` to your `docker run` command.
+
+## Testing
+
+```shell
+cmsrel CMSSW_5_3_32
+cd CMSSW_5_3_32/src
+cmsenv
+curl -O https://raw.githubusercontent.com/syuvivida/generator/master/cross_section/runJob/ana.py
+cmsRun ana.py inputFiles="root://eospublic.cern.ch//eos/opendata/cms/MonteCarlo2011/Summer11LegDR/SMHiggsToZZTo4L_M-125_7TeV-powheg15-JHUgenV3-pythia6/AODSIM/PU_S13_START53_LV6-v1/20000/F8DC5130-4E92-E411-BDCA-E0CB4E29C4BB.root" maxEvents=-1
+# With a grid proxy mounted:
+cmsRun ana.py inputFiles="/store/mc/RunIIFall17MiniAOD/BulkGravToWW_narrow_M-2000_13TeV-madgraph/MINIAODSIM/94X_mc2017_realistic_v10-v1/70000/DC096708-7BEB-E711-9D6F-C45444922AFC.root " maxEvents=-1
+```
