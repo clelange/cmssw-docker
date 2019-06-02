@@ -57,7 +57,8 @@ ENV HOME /home/cmsusr
 
 ADD     entrypoint.sh /opt/cms/entrypoint.sh
 RUN     sudo chmod 755 /opt/cms/entrypoint.sh && \
-        sudo chown -R cmsusr /home/cmsusr
+        sudo chown -R cmsusr /home/cmsusr && \
+        chmod 755 /home/cmsusr
 
 ENTRYPOINT ["/opt/cms/entrypoint.sh"]
 CMD     ["/bin/zsh"]
