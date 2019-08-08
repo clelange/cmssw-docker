@@ -1,7 +1,7 @@
 # SLC6 OS capable of using/running CMS software release(s).
 
 # Make the base image configurable:
-ARG BASEIMAGE=cern/slc6-base:20190522
+ARG BASEIMAGE=cern/slc6-base:20190724
 
 # Set up the SLC6 CMSSW base:
 FROM ${BASEIMAGE}
