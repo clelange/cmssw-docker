@@ -38,7 +38,8 @@ RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa
         CERN-CA-certs voms-clients-cpp ca-policy-lcg \
         krb5-devel cern-wrappers krb5-workstation \
         glibc-headers time \
-        strace sudo && \
+        strace sudo \
+        cvmfs cvmfs-config-default && \
         yum clean -y all
 
 RUN     wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo && \
@@ -59,6 +60,8 @@ RUN     groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 -G root cmsusr && \
 
 # Make Images grid/singularity compatible
 RUN mkdir -p /cvmfs /afs /eos /opt/cms /pool
+# Add local site config
+ADD etc-cvmfs-config.d-cms.cern.ch.local /etc/cvmfs/config.d/cms.cern.ch.local
 
 # Add a couple of useful files to cmsusr account
 WORKDIR /home/cmsusr
