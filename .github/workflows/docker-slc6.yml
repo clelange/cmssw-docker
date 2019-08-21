@@ -27,7 +27,7 @@ jobs:
         VCS_REF: ${{ github.event.head_commit.id }}
         VERSION: ${{ github.event.repository.pushed_at }}
       with:
-        args: build -t slc6-cms -e BUILD_DATE -e VCS_URL -e VCS_REF -e VERSION ./slc6-cms
+        args: build -t slc6-cms --build-arg BUILD_DATE --build-arg VCS_URL --build-arg VCS_REF --build-arg VERSION ./slc6-cms
     - name: Docker Tag SLC6 CMS
       uses: actions/docker/tag@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19
       env:
@@ -54,7 +54,7 @@ jobs:
         VCS_REF: ${{ github.event.head_commit.id }}
         VERSION: ${{ github.event.repository.pushed_at }}
       with:
-        args: build -t slc6-cvmfs -e BUILD_DATE -e VCS_URL -e VCS_REF -e VERSION ./slc6-cvmfs
+        args: build -t slc6-cvmfs --build-arg BUILD_DATE --build-arg VCS_URL --build-arg VCS_REF --build-arg VERSION ./slc6-cvmfs
     - name: Docker Tag SLC6 CVMFS
       uses: actions/docker/tag@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19
       env:
