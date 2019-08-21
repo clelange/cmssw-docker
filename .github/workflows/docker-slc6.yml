@@ -1,0 +1,66 @@
+on: push
+  paths:
+  - slc6-cms/*
+  - slc6-cvmfs/*
+
+name: Build SLC6
+jobs:
+  dockerRegistry:
+    name: Docker Registry
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Docker Registry
+      uses: actions/docker/login@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19
+      env:
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    - name: Build SLC6 CMS
+      uses: actions/docker/cli@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19
+      env:
+        BUILD_DATE: ${{ github.event.head_commit.timestamp }}
+        VCS_URL: ${{ github.repositoryUrl }}
+        VCS_REF: ${{ github.event.head_commit.id }}
+        VERSION: ${{ replace(github.event.repository.pushed_at }}
+      with:
+        args: build -t slc6-cms ./slc6-cms
+    - name: Docker Tag SLC6 CMS
+      uses: actions/docker/tag@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      with:
+        args: slc6-cms ${DOCKER_USERNAME}/slc6-cms
+    - name: Docker Push SHA SLC6 CMS
+      uses: actions/docker/cli@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      with:
+        args: push ${DOCKER_USERNAME}/slc6-cms:${IMAGE_SHA}
+    - name: Docker Push latest SLC6 CMS
+      uses: actions/docker/cli@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      with:
+        args: push ${DOCKER_USERNAME}/slc6-cms:latest
+    # - name: Build SLC6 CVMFS
+    #   uses: actions/docker/cli@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19
+    #   with:
+    #     args: build -t slc6-cvmfs ./slc6-cvmfs
+    # - name: Docker Tag SLC6 CVMFS
+    #   uses: actions/docker/tag@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19
+    #   env:
+    #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    #   with:
+    #     args: slc6-cvmfs ${DOCKER_USERNAME}/slc6-cvmfs
+    # - name: Docker Push SHA SLC6 CVMFS
+    #   uses: actions/docker/cli@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19
+    #   env:
+    #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    #   with:
+    #     args: push ${DOCKER_USERNAME}/slc6-cvmfs:${IMAGE_SHA}
+    # - name: Docker Push latest SLC6 CVMFS
+    #   uses: actions/docker/cli@86ab5e854a74b50b7ed798a94d9b8ce175d8ba19
+    #   env:
+    #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    #   with:
+    #     args: push ${DOCKER_USERNAME}/slc6-cvmfs:latest
