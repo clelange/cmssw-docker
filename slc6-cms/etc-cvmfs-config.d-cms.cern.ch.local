@@ -1,6 +1,0 @@
-# See https://twiki.cern.ch/twiki/bin/view/CMSPublic/CernVMFS4cms
-# Important setting for CMS, jobs will not work properly without!
-# export CMS_LOCAL_SITE=<location of the SITECONF area of your site you like to use relative to the CVMFS SITECONF area>
-export CMS_LOCAL_SITE=T3_CH_Volunteer
-# This only needed if you did not configure Squids in /etc/default.[conf|local]
-# CVMFS_HTTP_PROXY="http://<Squid1-url>:<port>|http://<Squid2-url>:<port>[|...]"

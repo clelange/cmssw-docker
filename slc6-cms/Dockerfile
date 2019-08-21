@@ -59,12 +59,6 @@ RUN     groupadd -g 1000 cmsusr && adduser -u 1000 -g 1000 -G root cmsusr && \
 
 # Make Images grid/singularity compatible
 RUN mkdir -p /cvmfs /afs /eos /opt/cms /pool
-# Patch CVMFS for local site config
-RUN mkdir -p /cvmfs/cms.cern.ch/SITECONF
-ADD dot-bashrc /cvmfs/cms.cern.ch/SITECONF/hello
-RUN cd /cvmfs/cms.cern.ch/SITECONF && \
-    ln -sf T3_CH_Volunteer local
-
 
 # Add a couple of useful files to cmsusr account
 WORKDIR /home/cmsusr
