@@ -77,4 +77,3 @@ RUN     sudo chmod 755 /opt/cms/entrypoint.sh && \
 
 ENTRYPOINT ["/opt/cms/entrypoint.sh"]
 CMD     ["/bin/zsh"]
-
