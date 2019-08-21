@@ -5,6 +5,7 @@ on:
     paths:
     - slc6-cms/*
     - slc6-cvmfs/*
+    - .github/workflows/*
 
 name: Build SLC6
 jobs:
@@ -24,7 +25,7 @@ jobs:
         BUILD_DATE: ${{ github.event.head_commit.timestamp }}
         VCS_URL: ${{ github.repositoryUrl }}
         VCS_REF: ${{ github.event.head_commit.id }}
-        VERSION: ${{ replace(github.event.repository.pushed_at }}
+        VERSION: ${{ github.event.repository.pushed_at }}
       with:
         args: build -t slc6-cms ./slc6-cms
     - name: Docker Tag SLC6 CMS
