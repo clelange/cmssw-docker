@@ -1,4 +1,4 @@
-on: push
+push:
   paths:
   - slc6-cms/*
   - slc6-cvmfs/*
