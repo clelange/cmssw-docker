@@ -1,11 +1,10 @@
 # Trigger on push
-on: [push]
-
-# File paths to consider in the event. Optional; defaults to all
-push:
-  paths:
-  - slc6-cms/*
-  - slc6-cvmfs/*
+on:
+  # File paths to consider in the event. Optional; defaults to all
+  push:
+    paths:
+    - slc6-cms/*
+    - slc6-cvmfs/*
 
 name: Build SLC6
 jobs:
