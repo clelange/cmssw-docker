@@ -27,18 +27,20 @@ LABEL   org.label-schema.build-date=$BUILD_DATE \
 USER root
 WORKDIR /root
 
-RUN     yum install -y libXft-devel libX11-devel libXpm-devel libXext-devel mesa-libGLU-devel \
-        libXmu libXpm libSM libXft libXext \
-        HEP_OSlibs wget git \
+RUN     yum install -y libX11-devel libXext-devel mesa-libGLU-devel \
+        mesa-libGL-devel libSM libXft libXext \
+        pciutils glx-utils mesa-dri-drivers libX11 libXi libXrender \
+        tcsh zsh tcl tk e2fsprogs perl-ExtUtils-Embed compat-libstdc++-33 libXmu e2fsprogs-libs libXpm bc libaio \
+        tar patch krb5-devel perl-Data-Dumper gcc unzip zip perl-libwww-perl libXpm-devel libXft-devel svn cvs \
+        gcc-c++ strace cern-wrappers krb5-workstation wget hostname readline-devel nano bzip2 perl-Switch perl-Storable \
+        perl-Env packages perl-Thread-Queue CERN-CA-certs tk-devel tcl-devel which python-pip voms-clients-cpp \
+        java-1.8.0-openjdk java-1.8.0-openjdk-devel popt libXcursor libXrandr libXinerama nspr nss nss-util file file-libs \
+        readline bzip2-libs python-requests-kerberos libgfortran time python2-psutil \
+        HEP_OSlibs_CC7 git \
+        yum-plugin-ovl openssl \
         glibc-devel.i686 glibc-devel \
-        zsh \
-        perl-ExtUtils-Embed perl-libwww-perl \
-        compat-libstdc++-33 \
-        zip e2fsprogs \
-        CERN-CA-certs voms-clients-cpp \
-        krb5-devel \
-        glibc-headers time \
-        strace sudo && \
+        glibc-headers \
+        sudo && \
         yum clean -y all
 
 RUN     wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo && \
