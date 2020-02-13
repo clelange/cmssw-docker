@@ -30,9 +30,11 @@ LABEL   org.label-schema.build-date=$BUILD_DATE \
 USER    cmsinst
 WORKDIR /opt/cms
 
-RUN     wget -O /opt/cms/bootstrap.sh http://cmsrep.cern.ch/cmssw/repos/bootstrap.sh \
+RUN     wget -q https://github.com/cms-sw/siteconf/archive/master.tar.gz \
+        && tar -xzf master.tar.gz \
+        && mv siteconf-master SITECONF \
+        && wget -O /opt/cms/bootstrap.sh http://cmsrep.cern.ch/cmssw/repos/bootstrap.sh \
         && sh /opt/cms/bootstrap.sh setup -r cms -architecture ${SCRAM_ARCH} -server cmsrep.cern.ch \
-        && /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+local-cern-siteconf+sm111124 \
         && /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+cmssw+${CMSSW_VERSION%_p*} \
         && if [[ $CMSSW_VERSION = *"patch"* ]]; then /opt/cms/common/cmspkg -a ${SCRAM_ARCH} install -y cms+cmssw-patch+${CMSSW_VERSION}; fi \
         && /opt/cms/common/cmspkg -a ${SCRAM_ARCH} clean
