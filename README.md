@@ -1,5 +1,7 @@
 # cmssw-docker
 
+_This project is now archived._ Development is continued at https://gitlab.cern.ch/cms-cloud/cmssw-docker
+
 Dockerfiles for CMSSW
 
 There are different sets of Dockerfiles in this repository:
